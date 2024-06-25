@@ -5,23 +5,23 @@ namespace chessboard
 {
     class Position
     {
-        private int line;
-        private int column;
+        private int Line;
+        private int Column;
 
-        public int Line { get => line; set => line = value; }
-        public int Column { get => column; set => column = value; }
+        public int line { get => Line; set => Line = value; }
+        public int column { get => Column; set => Column = value; }
 
         public Position(int line, int column)
         {
-            this.line = line;
-            this.column = column;
+            this.Line = line;
+            this.Column = column;
         }
 
         public override string ToString()
         {
-            return line 
+            return Line 
                 + ", "
-                + column;
+                + Column;
         }
 
     }

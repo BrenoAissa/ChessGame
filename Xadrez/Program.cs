@@ -1,15 +1,17 @@
 ﻿using System;
 using chessboard;
 
-namespace Xadrez
+namespace Chess
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Position P;
+            ChessBoard board = new ChessBoard(8, 8);
 
-            P = new Position(3, 4);
+            Screen.printBoard(board);
+
+            Console.ReadLine();
         }
     }
 }
