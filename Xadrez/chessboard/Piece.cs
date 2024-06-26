@@ -7,14 +7,13 @@ namespace chessboard
         public Position position { get; set; }
         public Color color { get; protected set; }
         public int moves { get; protected set; }
-        public ChessBoard chessBoard { get; protected set; }
+        public ChessBoard board { get; protected set; }
 
-        public Piece(Position position, Color color, ChessBoard chessBoard)
+        public Piece(Color color, ChessBoard board)
         {
-            this.position = position;
+            this.position = null;
+            this.board = board;
             this.color = color;
-            this.moves = moves;
-            this.chessBoard = chessBoard;
             this.moves = 0;
         }
     }

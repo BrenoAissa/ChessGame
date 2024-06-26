@@ -43,10 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="chessboard\ChessBoard.cs" />
-    <Compile Include="chessboard\Color.cs" />
-    <Compile Include="chessboard\Piece.cs" />
-    <Compile Include="chessboard\Position.cs" />
+    <Compile Include="chessBoard\ChessBoard.cs" />
+    <Compile Include="chessBoard\Color.cs" />
+    <Compile Include="chessBoard\Piece.cs" />
+    <Compile Include="chessBoard\Position.cs" />
+    <Compile Include="chessGame\King.cs" />
+    <Compile Include="chessGame\Rook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />

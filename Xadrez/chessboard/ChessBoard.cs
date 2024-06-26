@@ -19,5 +19,11 @@ namespace chessboard
         {
             return pieces[line, column];
         }
+
+        public void insertPiece(Piece p, Position pos)
+        {
+            pieces[pos.line, pos.column] = p;
+            p.position = pos;
+        }
     }
 }

@@ -13,8 +13,9 @@ namespace Chess
                 {
                     if (board.piece(i, j) == null) Console.Write(" - ");
 
-                    else Console.Write(board.piece(i, j) + "");
+                    else Console.Write(board.piece(i, j) + " ");
                 }
+
                 Console.WriteLine();
             }
         }
