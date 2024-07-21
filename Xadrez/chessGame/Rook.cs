@@ -5,7 +5,7 @@ namespace ChessGame
 {
     class Rook : Piece
     {
-        public Rook(ChessBoard board, Color color) : base(color, board)
+        public Rook(Board board, Color color) : base(color, board)
         {
         }
 

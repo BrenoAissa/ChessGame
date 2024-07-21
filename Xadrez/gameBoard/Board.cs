@@ -3,15 +3,15 @@ using Xadrez.chessBoard;
 
 namespace chessboard
 {
-    class ChessBoard
+    class Board
     {
-        public int lines {  get; set; }
+        public int rows {  get; set; }
         public int columns { get; set; }
         private Piece[,] pieces { get; set; }
 
-        public ChessBoard(int lines, int columns)
+        public Board(int lines, int columns)
         {
-            this.lines = lines;
+            this.rows = lines;
             this.columns = columns;
             pieces = new Piece[lines, columns];
         }
@@ -23,7 +23,7 @@ namespace chessboard
         
         public Piece piece(Position pos)
         {
-            return pieces[pos.line, pos.column];
+            return pieces[pos.row, pos.column];
         }
 
         public bool existPiece(Position pos)
@@ -38,13 +38,13 @@ namespace chessboard
             {
                 throw new BoardException("There is already a piece in this position");
             }
-            pieces[pos.line, pos.column] = p;
+            pieces[pos.row, pos.column] = p;
             p.position = pos;
         }
 
         public bool validPosition(Position pos)
         {
-            if(pos.line < 0 || pos.line >= lines || pos.column < 0 || pos.column >= columns) return false;
+            if(pos.row < 0 || pos.row >= rows || pos.column < 0 || pos.column >= columns) return false;
 
             return true;
         }

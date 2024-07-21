@@ -5,7 +5,7 @@ namespace ChessGame
 {
     class King : Piece
     {
-        public King(ChessBoard board, Color color) : base(color, board) { 
+        public King(Board board, Color color) : base(color, board) { 
         }
 
         public override string ToString()

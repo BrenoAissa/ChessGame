@@ -1,5 +1,6 @@
 ﻿using System;
 using chessboard;
+using chessGame;
 using ChessGame;
 using Xadrez.chessBoard;
 
@@ -9,21 +10,11 @@ namespace Chess
     {
         static void Main(string[] args)
         {
-            try
-            { 
-                ChessBoard board = new ChessBoard(8, 8);
+            ChessPosition chessPos = new ChessPosition('a', 1);
 
-                board.insertPiece(new Rook(board, Color.Black), new Position(0, 0));
-                board.insertPiece(new Rook(board, Color.Black), new Position(1, 9));
-                board.insertPiece(new King(board, Color.Black), new Position(0, 2));
+            Console.WriteLine(chessPos);
 
-                Screen.printBoard(board);
-
-            }
-            catch (BoardException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Console.WriteLine(chessPos.ToPosition());
 
             Console.ReadLine();
         }

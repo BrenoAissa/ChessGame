@@ -5,9 +5,9 @@ namespace Chess
 {
     class Screen
     {
-        public static void printBoard(ChessBoard board)
+        public static void printBoard(Board board)
         {
-            for (int i = 0; i < board.lines; i++)
+            for (int i = 0; i < board.rows; i++)
             {
                 for (int j = 0; j < board.columns; j++)
                 {

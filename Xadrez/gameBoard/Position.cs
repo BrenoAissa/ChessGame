@@ -8,7 +8,7 @@ namespace chessboard
         private int Line;
         private int Column;
 
-        public int line { get => Line; set => Line = value; }
+        public int row { get => Line; set => Line = value; }
         public int column { get => Column; set => Column = value; }
 
         public Position(int line, int column)
