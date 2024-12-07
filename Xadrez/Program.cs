@@ -3,6 +3,7 @@ using chessboard;
 using chessGame;
 using ChessGame;
 using Xadrez.chessBoard;
+using Xadrez.chessGame;
 
 namespace Chess
 {
@@ -12,15 +13,9 @@ namespace Chess
         {
             try
             {
-                Board board = new Board(8, 8);
+                ChessMatch chessMatch = new ChessMatch();
 
-                board.insertPiece(new Rook(board, Color.Black), new Position(0, 0));
-                board.insertPiece(new Rook(board, Color.Black), new Position(1, 3));
-                board.insertPiece(new King(board, Color.Black), new Position(0, 2));
-
-                board.insertPiece(new Rook(board, Color.White), new Position(3, 5));
-
-                Screen.printBoard(board);
+                Screen.printBoard(chessMatch.board);
             }
             catch(BoardException e)
             {
