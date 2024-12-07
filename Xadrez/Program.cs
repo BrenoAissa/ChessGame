@@ -10,11 +10,22 @@ namespace Chess
     {
         static void Main(string[] args)
         {
-            ChessPosition chessPos = new ChessPosition('a', 1);
+            try
+            {
+                Board board = new Board(8, 8);
 
-            Console.WriteLine(chessPos);
+                board.insertPiece(new Rook(board, Color.Black), new Position(0, 0));
+                board.insertPiece(new Rook(board, Color.Black), new Position(1, 3));
+                board.insertPiece(new King(board, Color.Black), new Position(0, 2));
 
-            Console.WriteLine(chessPos.ToPosition());
+                board.insertPiece(new Rook(board, Color.White), new Position(3, 5));
+
+                Screen.printBoard(board);
+            }
+            catch(BoardException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadLine();
         }
