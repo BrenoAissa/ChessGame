@@ -15,6 +15,20 @@ namespace Chess
             {
                 ChessMatch chessMatch = new ChessMatch();
 
+                while (!chessMatch.endGame)
+                {
+                    Console.Clear();
+                    Screen.printBoard(chessMatch.board);
+
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.readPositionChess().ToPosition();
+                    Console.Write("Destination: ");
+                    Position destination = Screen.readPositionChess().ToPosition();
+
+                    chessMatch.executeMoves(origin, destination);
+                }
+
                 Screen.printBoard(chessMatch.board);
             }
             catch(BoardException e)

@@ -10,12 +10,14 @@ namespace Xadrez.chessGame
         public Board board { get; private set; }
         private int turn;
         private Color currentPlayer;
+        public bool endGame { get; private set; }
 
         public ChessMatch()
         {
             board = new Board(8, 8);
             turn = 1;
             currentPlayer = Color.White;
+            endGame = false;
             insertPieces();
         }
 
