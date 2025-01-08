@@ -17,12 +17,20 @@ namespace Chess
 
                 while (!chessMatch.endGame)
                 {
+
                     Console.Clear();
                     Screen.printBoard(chessMatch.board);
 
                     Console.WriteLine();
                     Console.Write("Origin: ");
                     Position origin = Screen.readPositionChess().ToPosition();
+
+                    bool[,] possiblePositions = chessMatch.board.piece(origin).possibleMoves();
+
+                    Console.Clear();
+                    Screen.printBoard(chessMatch.board, possiblePositions);
+
+                    Console.WriteLine();
                     Console.Write("Destination: ");
                     Position destination = Screen.readPositionChess().ToPosition();
 
