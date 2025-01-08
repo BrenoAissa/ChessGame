@@ -2,14 +2,15 @@
 using chessGame;
 using ChessGame;
 using System;
+using Xadrez.chessBoard;
 
 namespace Xadrez.chessGame
 {
     class ChessMatch
     {
         public Board board { get; private set; }
-        private int turn;
-        private Color currentPlayer;
+        public int turn { get; private set; }
+        public Color currentPlayer { get; private set; }
         public bool endGame { get; private set; }
 
         public ChessMatch()
@@ -27,6 +28,31 @@ namespace Xadrez.chessGame
             p.incrementMoveCount();
             Piece capturedPiece = board.removePiece(destination);
             board.insertPiece(p, destination);
+        }
+
+        public void validatePositionOrigin(Position pos)
+        {
+            if (board.piece(pos) == null) throw new ChessBoardException("There is no piece at the chosen origin position!");
+            if (currentPlayer != board.piece(pos).color) throw new ChessBoardException("The chosen origin piece is not yours!");
+            if (!board.piece(pos).existsPossibleMoves()) throw new ChessBoardException("There are no possible moves for the chosen piece!");
+        }
+
+        public void validatePositionDestination(Position origin, Position destination)
+        {
+            if (!board.piece(origin).canMoveTo(destination)) throw new ChessBoardException("Invalid destination position");
+        }
+
+        public void makeMove(Position origin, Position destination)
+        {
+            executeMoves(origin, destination);
+            turn++;
+            changedPlayer();
+        }
+
+        private void changedPlayer()
+        {
+            if (currentPlayer == Color.White) currentPlayer = Color.Black;
+            else currentPlayer = Color.White;
         }
 
         public void insertPieces()

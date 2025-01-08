@@ -36,7 +36,7 @@ namespace chessboard
         {
             if (existPiece(pos))
             {
-                throw new BoardException("There is already a piece in this position");
+                throw new ChessBoardException("There is already a piece in this position");
             }
             pieces[pos.row, pos.column] = p;
             p.position = pos;
@@ -62,7 +62,7 @@ namespace chessboard
         {
             if (!validPosition(pos))
             {
-                throw new BoardException("Invalid position!");
+                throw new ChessBoardException("Invalid position!");
             }
         }
     }

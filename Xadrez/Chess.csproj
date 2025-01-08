@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="chessGame\ChessMatch.cs" />
     <Compile Include="chessGame\ChessPosition.cs" />
-    <Compile Include="gameBoard\BoardException.cs" />
+    <Compile Include="gameBoard\ChessBoardException.cs" />
     <Compile Include="gameBoard\Board.cs" />
     <Compile Include="gameBoard\Color.cs" />
     <Compile Include="gameBoard\Piece.cs" />
