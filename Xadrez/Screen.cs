@@ -1,11 +1,51 @@
 ﻿using chessboard;
 using chessGame;
 using System;
+using System.Collections.Generic;
+using Xadrez.chessGame;
 
 namespace Chess
 {
     class Screen
     {
+
+        public static void printMatch(ChessMatch chessMatch)
+        {
+            printBoard(chessMatch.board);
+            Console.WriteLine();
+            printPiecesCaptured(chessMatch);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + chessMatch.turn);
+            Console.WriteLine("Waiting player " + chessMatch.currentPlayer);
+        }
+
+        public static void printPiecesCaptured(ChessMatch chessMatch)
+        {
+            Console.WriteLine("Pieces captured:");
+
+            Console.Write("White: ");
+            printCollection(chessMatch.capturedPieces(Color.White));
+            Console.WriteLine();
+            ConsoleColor aux = Console.ForegroundColor;
+
+            Console.Write("Black: ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            printCollection(chessMatch.capturedPieces(Color.Black));
+
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void printCollection(HashSet<Piece> piece)
+        {
+            Console.Write("[");
+            foreach(Piece p in piece)
+            {
+                Console.Write(p + " ");
+            }
+            Console.Write("]");
+        }
+
         public static void printBoard(Board board)
         {
             for (int i = 0; i < board.rows; i++)

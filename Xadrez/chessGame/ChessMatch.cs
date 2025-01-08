@@ -2,6 +2,7 @@
 using chessGame;
 using ChessGame;
 using System;
+using System.Collections.Generic;
 using Xadrez.chessBoard;
 
 namespace Xadrez.chessGame
@@ -12,6 +13,8 @@ namespace Xadrez.chessGame
         public int turn { get; private set; }
         public Color currentPlayer { get; private set; }
         public bool endGame { get; private set; }
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> captured;
 
         public ChessMatch()
         {
@@ -19,6 +22,8 @@ namespace Xadrez.chessGame
             turn = 1;
             currentPlayer = Color.White;
             endGame = false;
+            pieces = new HashSet<Piece>();
+            captured = new HashSet<Piece>();
             insertPieces();
         }
 
@@ -28,6 +33,7 @@ namespace Xadrez.chessGame
             p.incrementMoveCount();
             Piece capturedPiece = board.removePiece(destination);
             board.insertPiece(p, destination);
+            if(capturedPiece != null) captured.Add(capturedPiece);
         }
 
         public void validatePositionOrigin(Position pos)
@@ -55,22 +61,49 @@ namespace Xadrez.chessGame
             else currentPlayer = Color.White;
         }
 
+        public HashSet<Piece> capturedPieces(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece p in captured)
+            {
+                if (p.color == color) aux.Add(p);
+            }
+            return aux;
+        }
+
+        public HashSet<Piece> piecesInGame(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece p in pieces)
+            {
+                if (p.color == color) aux.Add(p);
+            }
+            aux.ExceptWith(capturedPieces(color));
+            return aux;
+        }
+
+        public void placeNewPiece(char column, int row, Piece piece)
+        {
+            board.insertPiece(piece, new ChessPosition(column, row).ToPosition());
+            pieces.Add(piece);
+        }
+
         public void insertPieces()
         {
-            board.insertPiece(new Rook(board, Color.White), new ChessPosition('c', 1).ToPosition());
-            board.insertPiece(new Rook(board, Color.White), new ChessPosition('c', 2).ToPosition());
-            board.insertPiece(new Rook(board, Color.White), new ChessPosition('d', 2).ToPosition());
-            board.insertPiece(new Rook(board, Color.White), new ChessPosition('e', 2).ToPosition());
-            board.insertPiece(new Rook(board, Color.White), new ChessPosition('e', 1).ToPosition());
-            board.insertPiece(new King(board, Color.White), new ChessPosition('d', 1).ToPosition());
+            placeNewPiece('c', 1, new Rook(board, Color.White));
+            placeNewPiece('c', 2, new Rook(board, Color.White));
+            placeNewPiece('d', 2, new Rook(board, Color.White));
+            placeNewPiece('e', 2, new Rook(board, Color.White));
+            placeNewPiece('e', 1, new Rook(board, Color.White));
+            placeNewPiece('d', 1, new King(board, Color.White));
 
 
-            board.insertPiece(new Rook(board, Color.Black), new ChessPosition('c', 7).ToPosition());
-            board.insertPiece(new Rook(board, Color.Black), new ChessPosition('c', 8).ToPosition());
-            board.insertPiece(new Rook(board, Color.Black), new ChessPosition('d', 7).ToPosition());
-            board.insertPiece(new Rook(board, Color.Black), new ChessPosition('e', 7).ToPosition());
-            board.insertPiece(new Rook(board, Color.Black), new ChessPosition('e', 8).ToPosition());
-            board.insertPiece(new King(board, Color.Black), new ChessPosition('d', 8).ToPosition());
+            placeNewPiece('c', 7, new Rook(board, Color.Black));
+            placeNewPiece('c', 8, new Rook(board, Color.Black));
+            placeNewPiece('d', 7, new Rook(board, Color.Black));
+            placeNewPiece('e', 7, new Rook(board, Color.Black));
+            placeNewPiece('e', 8, new Rook(board, Color.Black));
+            placeNewPiece('d', 8, new King(board, Color.Black));
 
         }
     }
