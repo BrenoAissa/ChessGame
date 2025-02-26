@@ -15,6 +15,7 @@ namespace Xadrez.chessGame
         public bool endGame { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
+        public bool check { get; private set; }
 
         public ChessMatch()
         {
@@ -22,18 +23,46 @@ namespace Xadrez.chessGame
             turn = 1;
             currentPlayer = Color.White;
             endGame = false;
+            check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             insertPieces();
         }
 
-        public void executeMoves(Position origin, Position destination)
+        public Piece executeMoves(Position origin, Position destination)
         {
             Piece p = board.removePiece(origin);
             p.incrementMoveCount();
             Piece capturedPiece = board.removePiece(destination);
             board.insertPiece(p, destination);
             if(capturedPiece != null) captured.Add(capturedPiece);
+            return capturedPiece;
+        }
+
+        public void undoMove(Position origin, Position destination, Piece pieceCaptured)
+        {
+            Piece p = board.removePiece(destination);
+            p.decrementMoveCount();
+            if (pieceCaptured != null)
+            {
+                board.insertPiece(pieceCaptured, destination);
+                captured.Remove(pieceCaptured);
+            }
+            board.insertPiece(p, origin);
+
+        }
+
+        public void makeMove(Position origin, Position destination)
+        {
+            Piece pieceCaptured = executeMoves(origin, destination);
+            if (isInCheck(currentPlayer)) {
+                undoMove(origin, destination, pieceCaptured);
+                throw new ChessBoardException("You cannot put yourself in check");
+            }
+            if (isInCheck(adversary(currentPlayer))) check = true;
+            else check = false;
+            turn++;
+            changedPlayer();
         }
 
         public void validatePositionOrigin(Position pos)
@@ -46,13 +75,6 @@ namespace Xadrez.chessGame
         public void validatePositionDestination(Position origin, Position destination)
         {
             if (!board.piece(origin).canMoveTo(destination)) throw new ChessBoardException("Invalid destination position");
-        }
-
-        public void makeMove(Position origin, Position destination)
-        {
-            executeMoves(origin, destination);
-            turn++;
-            changedPlayer();
         }
 
         private void changedPlayer()
@@ -69,6 +91,34 @@ namespace Xadrez.chessGame
                 if (p.color == color) aux.Add(p);
             }
             return aux;
+        }
+
+        private Color adversary(Color color)
+        {
+            if (color == Color.Black) return Color.White;
+            return Color.White;
+        }
+
+        private Piece king(Color color)
+        {
+            foreach (Piece p in piecesInGame(color))
+            {
+                if (p is King) return p;
+            }
+            return null;
+        }
+
+        public bool isInCheck(Color color)
+        {
+
+            Piece k = king(color);
+            if(k.color == null) throw new ChessBoardException("There is no king of " + color + " on the board.");
+                
+            foreach (Piece p in piecesInGame(adversary(color))){
+                bool[,] mat = p.possibleMoves();
+                if (mat[k.position.row, k.position.column]) return true;
+            }
+            return false;
         }
 
         public HashSet<Piece> piecesInGame(Color color)

@@ -22,6 +22,11 @@ namespace chessboard
             movesCount++;
         }
 
+        public void decrementMoveCount()
+        {
+            movesCount--;
+        }
+
         public bool existsPossibleMoves()
         {
             bool[,] mat = possibleMoves();
