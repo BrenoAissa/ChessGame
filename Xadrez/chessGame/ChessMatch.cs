@@ -61,8 +61,11 @@ namespace Xadrez.chessGame
             }
             if (isInCheck(adversary(currentPlayer))) check = true;
             else check = false;
-            turn++;
-            changedPlayer();
+            if (testCheckMate(adversary(currentPlayer))) endGame = true;
+            else { 
+                turn++;
+                changedPlayer();
+            }
         }
 
         public void validatePositionOrigin(Position pos)
@@ -121,6 +124,32 @@ namespace Xadrez.chessGame
             return false;
         }
 
+        public bool testCheckMate(Color color)
+        {
+            if(!isInCheck(color)) return false;
+
+            foreach (Piece p in piecesInGame(color))
+            {
+                bool[,] mat = p.possibleMoves();
+                for(int i = 0; i < board.rows; i++)
+                {
+                    for(int j = 0; j < board.columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = p.position;
+                            Position destination = new Position(i, j);
+                            Piece pieceCaptured = executeMoves(origin, destination);
+                            bool testCheck = isInCheck(color);
+                            undoMove(origin, destination, pieceCaptured);
+                            if (!testCheck) return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public HashSet<Piece> piecesInGame(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
@@ -141,19 +170,12 @@ namespace Xadrez.chessGame
         public void insertPieces()
         {
             placeNewPiece('c', 1, new Rook(board, Color.White));
-            placeNewPiece('c', 2, new Rook(board, Color.White));
-            placeNewPiece('d', 2, new Rook(board, Color.White));
-            placeNewPiece('e', 2, new Rook(board, Color.White));
-            placeNewPiece('e', 1, new Rook(board, Color.White));
             placeNewPiece('d', 1, new King(board, Color.White));
+            placeNewPiece('h', 7, new Rook(board, Color.White));
 
 
-            placeNewPiece('c', 7, new Rook(board, Color.Black));
-            placeNewPiece('c', 8, new Rook(board, Color.Black));
-            placeNewPiece('d', 7, new Rook(board, Color.Black));
-            placeNewPiece('e', 7, new Rook(board, Color.Black));
-            placeNewPiece('e', 8, new Rook(board, Color.Black));
-            placeNewPiece('d', 8, new King(board, Color.Black));
+            placeNewPiece('a', 8, new King(board, Color.Black));
+            placeNewPiece('b', 8, new Rook(board, Color.Black));
 
         }
     }

@@ -16,9 +16,17 @@ namespace Chess
             printPiecesCaptured(chessMatch);
             Console.WriteLine();
             Console.WriteLine("Turn: " + chessMatch.turn);
-            Console.WriteLine("Waiting player " + chessMatch.currentPlayer);
-            if (chessMatch.check)
-                Console.WriteLine("CHECK!");
+            if (!chessMatch.endGame)
+            {
+                Console.WriteLine("Waiting player " + chessMatch.currentPlayer);
+                if (chessMatch.check)
+                    Console.WriteLine("CHECK!");
+            }
+            else
+            {
+                Console.WriteLine("CHECKMATE");
+                Console.WriteLine("The winner is " + chessMatch.currentPlayer);
+            }
 
         }
 
