@@ -77,7 +77,7 @@ namespace Xadrez.chessGame
 
         public void validatePositionDestination(Position origin, Position destination)
         {
-            if (!board.piece(origin).canMoveTo(destination)) throw new ChessBoardException("Invalid destination position");
+            if (!board.piece(origin).possibleMove(destination)) throw new ChessBoardException("Invalid destination position");
         }
 
         private void changedPlayer()
