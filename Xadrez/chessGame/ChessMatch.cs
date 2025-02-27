@@ -95,7 +95,7 @@ namespace Xadrez.chessGame
 
         private Color adversary(Color color)
         {
-            if (color == Color.Black) return Color.White;
+            if (color == Color.White) return Color.Black;
             return Color.White;
         }
 
