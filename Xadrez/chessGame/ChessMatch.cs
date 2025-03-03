@@ -35,6 +35,27 @@ namespace Xadrez.chessGame
             Piece capturedPiece = board.removePiece(destination);
             board.insertPiece(p, destination);
             if(capturedPiece != null) captured.Add(capturedPiece);
+
+            // #kingside castling
+            if(p is King && destination.column == origin.column + 2)
+            {
+                Position originR = new Position(origin.row, origin.column + 3);
+                Position destinationR = new Position(origin.row, origin.column + 1);
+                Piece R = board.removePiece(originR);
+                R.incrementMoveCount();
+                board.insertPiece(R, destinationR);
+            }
+
+            // #queenside castling
+            if (p is King && destination.column == origin.column - 2)
+            {
+                Position originR = new Position(origin.row, origin.column - 4);
+                Position destinationR = new Position(origin.row, origin.column - 1);
+                Piece R = board.removePiece(originR);
+                R.incrementMoveCount();
+                board.insertPiece(R, destinationR);
+            }
+
             return capturedPiece;
         }
 
@@ -48,6 +69,26 @@ namespace Xadrez.chessGame
                 captured.Remove(pieceCaptured);
             }
             board.insertPiece(p, origin);
+
+            // #kingside castling
+            if (p is King && destination.column == origin.column + 2)
+            {
+                Position originR = new Position(origin.row, origin.column + 3);
+                Position destinationR = new Position(origin.row, origin.column + 1);
+                Piece R = board.removePiece(destinationR);
+                R.decrementMoveCount();
+                board.insertPiece(R, originR);
+            }
+
+            // #queenside castling
+            if (p is King && destination.column == origin.column - 2)
+            {
+                Position originR = new Position(origin.row, origin.column - 4);
+                Position destinationR = new Position(origin.row, origin.column - 1);
+                Piece R = board.removePiece(destinationR);
+                R.decrementMoveCount();
+                board.insertPiece(R, originR);
+            }
 
         }
 
@@ -172,7 +213,7 @@ namespace Xadrez.chessGame
             placeNewPiece('b', 1, new Knight(board, Color.White));
             placeNewPiece('c', 1, new Bishop(board, Color.White));
             placeNewPiece('d', 1, new Queen(board, Color.White));
-            placeNewPiece('e', 1, new King(board, Color.White));
+            placeNewPiece('e', 1, new King(board, Color.White, this));
             placeNewPiece('f', 1, new Bishop(board, Color.White));
             placeNewPiece('g', 1, new Knight(board, Color.White));
             placeNewPiece('h', 1, new Rook(board, Color.White));
@@ -190,7 +231,7 @@ namespace Xadrez.chessGame
             placeNewPiece('b', 8, new Knight(board, Color.Black));
             placeNewPiece('c', 8, new Bishop(board, Color.Black));
             placeNewPiece('d', 8, new Queen(board, Color.Black)); 
-            placeNewPiece('e', 8, new King(board, Color.Black));
+            placeNewPiece('e', 8, new King(board, Color.Black, this));
             placeNewPiece('f', 8, new Bishop(board, Color.Black));
             placeNewPiece('g', 8, new Knight(board, Color.Black));
             placeNewPiece('h', 8, new Rook(board, Color.Black));
