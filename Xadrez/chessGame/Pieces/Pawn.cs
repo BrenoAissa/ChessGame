@@ -1,12 +1,15 @@
 ﻿using System;
 using chessboard;
+using Xadrez.chessGame;
 
 namespace ChessGame
 {
     class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(color, board)
+        private ChessMatch match;
+        public Pawn(Board board, Color color, ChessMatch match) : base(color, board)
         {
+            this.match = match;
         }
 
         public override string ToString()
@@ -56,6 +59,20 @@ namespace ChessGame
                 {
                     mat[pos.row, pos.column] = true;
                 }
+
+                // #En passant
+                if (position.row == 3)
+                {
+                    Position left = new Position(position.row, position.column - 1);
+                    if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
+                        mat[left.row, left.column] = true;
+
+                    Position right = new Position(position.row, position.column + 1);
+                    if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
+                        mat[right.row, right.column] = true;
+
+                }
+
             }
             else
             {
@@ -82,6 +99,19 @@ namespace ChessGame
                 {
                     mat[pos.row, pos.column] = true;
                 }
+            }
+
+            // #En passant
+            if (position.row == 4)
+            {
+                Position left = new Position(position.row, position.column - 1);
+                if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
+                    mat[left.row, left.column] = true;
+
+                Position right = new Position(position.row, position.column + 1);
+                if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
+                    mat[right.row, right.column] = true;
+
             }
 
             return mat;

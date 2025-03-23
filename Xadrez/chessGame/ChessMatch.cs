@@ -15,6 +15,7 @@ namespace Xadrez.chessGame
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
         public bool check { get; private set; }
+        public Piece vulnerableEnPassant { get; private set; }
 
         public ChessMatch()
         {
@@ -23,6 +24,7 @@ namespace Xadrez.chessGame
             currentPlayer = Color.White;
             endGame = false;
             check = false;
+            vulnerableEnPassant = null;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
             insertPieces();
@@ -55,6 +57,19 @@ namespace Xadrez.chessGame
                 R.incrementMoveCount();
                 board.insertPiece(R, destinationR);
             }
+
+            // #En passant
+            if(p is Pawn)
+                if(origin.column != destination.column && capturedPiece == null) {
+                    Position posP;
+                    if (p.color == Color.White)
+                        posP = new Position(destination.row + 1, destination.column);
+                    else
+                        posP = new Position(destination.row - 1, destination.column);
+
+                    capturedPiece = board.removePiece(posP);
+                    captured.Add(capturedPiece);
+                }
 
             return capturedPiece;
         }
@@ -90,6 +105,18 @@ namespace Xadrez.chessGame
                 board.insertPiece(R, originR);
             }
 
+            // #En passant
+            if (p is Pawn)
+                if (origin.column != destination.column && pieceCaptured == vulnerableEnPassant)
+                {
+                    Piece pawn = board.removePiece(destination);
+                    Position posP;
+                    if (p.color == Color.White)
+                        posP = new Position(3, destination.column);
+                    else
+                        posP = new Position(4, destination.column);
+                    board.insertPiece(pawn, posP);
+                }
         }
 
         public void makeMove(Position origin, Position destination)
@@ -106,6 +133,14 @@ namespace Xadrez.chessGame
                 turn++;
                 changedPlayer();
             }
+
+            Piece p = board.piece(destination);
+
+            // #EnPassant
+            if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
+                vulnerableEnPassant = p;
+            else
+                vulnerableEnPassant = null;
         }
 
         public void validatePositionOrigin(Position pos)
@@ -217,14 +252,14 @@ namespace Xadrez.chessGame
             placeNewPiece('f', 1, new Bishop(board, Color.White));
             placeNewPiece('g', 1, new Knight(board, Color.White));
             placeNewPiece('h', 1, new Rook(board, Color.White));
-            placeNewPiece('a', 2, new Pawn(board, Color.White));
-            placeNewPiece('b', 2, new Pawn(board, Color.White));
-            placeNewPiece('c', 2, new Pawn(board, Color.White));
-            placeNewPiece('d', 2, new Pawn(board, Color.White));
-            placeNewPiece('e', 2, new Pawn(board, Color.White));
-            placeNewPiece('f', 2, new Pawn(board, Color.White));
-            placeNewPiece('g', 2, new Pawn(board, Color.White));
-            placeNewPiece('h', 2, new Pawn(board, Color.White));
+            placeNewPiece('a', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('b', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('c', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('d', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('e', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('f', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('g', 2, new Pawn(board, Color.White, this));
+            placeNewPiece('h', 2, new Pawn(board, Color.White, this ));
 
 
             placeNewPiece('a', 8, new Rook(board, Color.Black));
@@ -235,14 +270,14 @@ namespace Xadrez.chessGame
             placeNewPiece('f', 8, new Bishop(board, Color.Black));
             placeNewPiece('g', 8, new Knight(board, Color.Black));
             placeNewPiece('h', 8, new Rook(board, Color.Black));
-            placeNewPiece('a', 7, new Pawn(board, Color.Black));
-            placeNewPiece('b', 7, new Pawn(board, Color.Black));
-            placeNewPiece('c', 7, new Pawn(board, Color.Black));
-            placeNewPiece('d', 7, new Pawn(board, Color.Black));
-            placeNewPiece('e', 7, new Pawn(board, Color.Black));
-            placeNewPiece('f', 7, new Pawn(board, Color.Black));
-            placeNewPiece('g', 7, new Pawn(board, Color.Black));
-            placeNewPiece('h', 7, new Pawn(board, Color.Black));
+            placeNewPiece('a', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('b', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('c', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('d', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('e', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('f', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('g', 7, new Pawn(board, Color.Black, this));
+            placeNewPiece('h', 7, new Pawn(board, Color.Black, this));
         }
     }
 }
