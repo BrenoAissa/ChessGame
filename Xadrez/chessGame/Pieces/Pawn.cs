@@ -65,11 +65,11 @@ namespace ChessGame
                 {
                     Position left = new Position(position.row, position.column - 1);
                     if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
-                        mat[left.row, left.column] = true;
+                        mat[left.row - 1, left.column] = true;
 
                     Position right = new Position(position.row, position.column + 1);
-                    if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
-                        mat[right.row, right.column] = true;
+                    if (board.validPosition(right) && existEnemy(right) && board.piece(right) == match.vulnerableEnPassant)
+                        mat[right.row - 1, right.column] = true;
 
                 }
 
@@ -106,11 +106,11 @@ namespace ChessGame
             {
                 Position left = new Position(position.row, position.column - 1);
                 if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
-                    mat[left.row, left.column] = true;
+                    mat[left.row + 1, left.column] = true;
 
                 Position right = new Position(position.row, position.column + 1);
-                if (board.validPosition(left) && existEnemy(left) && board.piece(left) == match.vulnerableEnPassant)
-                    mat[right.row, right.column] = true;
+                if (board.validPosition(right) && existEnemy(right) && board.piece(right) == match.vulnerableEnPassant)
+                    mat[right.row + 1, right.column] = true;
 
             }
 
