@@ -1,6 +1,7 @@
 ﻿using chessboard;
 using chessGame;
 using ChessGame;
+using System;
 using System.Collections.Generic;
 using Xadrez.chessBoard;
 
@@ -122,25 +123,70 @@ namespace Xadrez.chessGame
         public void makeMove(Position origin, Position destination)
         {
             Piece pieceCaptured = executeMoves(origin, destination);
+            
             if (isInCheck(currentPlayer)) {
                 undoMove(origin, destination, pieceCaptured);
                 throw new ChessBoardException("You cannot put yourself in check");
             }
+
+            Piece p = board.piece(destination);
+
+           // #Pawn promotion
+           if(p is Pawn)
+                if((p.color == Color.White && destination.row == 0) || (p.color == Color.Black && destination.row == 7))
+                {
+                    p = board.removePiece(destination);
+                    pieces.Remove(p);
+                    choosePromotionPiece(destination, p);
+                }
+
             if (isInCheck(adversary(currentPlayer))) check = true;
             else check = false;
+
+
             if (testCheckMate(adversary(currentPlayer))) endGame = true;
             else { 
                 turn++;
                 changedPlayer();
             }
 
-            Piece p = board.piece(destination);
 
-            // #EnPassant
+            // #En Passant
             if (p is Pawn && (destination.row == origin.row - 2 || destination.row == origin.row + 2))
                 vulnerableEnPassant = p;
             else
                 vulnerableEnPassant = null;
+        }
+
+        public void choosePromotionPiece(Position destination, Piece p)
+        {
+            Console.WriteLine("Which piece do you want to choose? Q, B, K or R");
+            string pieceChoosed = Console.ReadLine();
+            string pieceChoosedFormated = pieceChoosed.ToUpper();
+            if (pieceChoosedFormated == "Q")
+            {
+                Piece queen = new Queen(board, p.color);
+                board.insertPiece(queen, destination);
+                pieces.Add(queen);
+            }
+            else if (pieceChoosedFormated == "B")
+            {
+                Piece bishop = new Bishop(board, p.color);
+                board.insertPiece(bishop, destination);
+                pieces.Add(bishop);
+            }
+            else if (pieceChoosedFormated == "K")
+            {
+                Piece knight = new Knight(board, p.color);
+                board.insertPiece(knight, destination);
+                pieces.Add(knight);
+            }
+            else if (pieceChoosedFormated == "R")
+            {
+                Piece rook = new Rook(board, p.color);
+                board.insertPiece(rook, destination);
+                pieces.Add(rook);
+            }
         }
 
         public void validatePositionOrigin(Position pos)
